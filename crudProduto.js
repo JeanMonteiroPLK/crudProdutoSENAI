@@ -1,9 +1,6 @@
 /*Criação de uma página WEB, onde será possível realizar o cadastro de um produto de uma loja, alterar o valor desse produto, deletar o produto da prateleira e apresentar a lista dos produtos para os clientes na página.
-
 Tudo isso deverá ser realizado em uma única página.
-
 Itens obrigatórios:
-
 - Criação de um array de objetos para armazenar os produtos. Deverá ser armazenados dentro do LocalStorage com a chave "produtosLoja". (3,0)
 - Criação da página HTML para apresentar / alterar / cadastrar / deletar os produtos. (2,0)
 - Função para listar os produtos. (1,0)
@@ -43,7 +40,7 @@ function listar() {
     for(i = 0; i < listaCopiaLocalStorage.length; i++){
         objetoAtual = listaCopiaLocalStorage[i]
 
-        stringPrint += `${i+1}º produto: ${JSON.stringify(objetoAtual)} <br>`
+        stringPrint += `${i+1}º produto: ${Object.entries(objetoAtual)} <br>`
     }  
 
     document.querySelector('#listar').innerHTML = stringPrint
