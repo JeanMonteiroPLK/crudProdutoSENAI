@@ -27,8 +27,7 @@ function cadastrar() {
         nome: nomeInput.value,
         preco: precoInput.value
     }
-
-    listaDeProdutos.push(JSON.stringify(produto))
+    listaDeProdutos.push(produto)
     localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
 }
 
@@ -40,7 +39,7 @@ function listar() {
     for(i = 0; i < listaCopiaLocalStorage.length; i++){
         objetoAtual = listaCopiaLocalStorage[i]
 
-        stringPrint += `${i+1}º produto: ${Object.entries(objetoAtual)} <br>`
+        stringPrint += `${i+1}º produto: ${Object.values(objetoAtual)} <br>`
     }  
 
     document.querySelector('#listar').innerHTML = stringPrint
