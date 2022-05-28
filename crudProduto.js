@@ -36,7 +36,7 @@ function listar() {
     var stringPrint = ''
     for (i = 0; i < listaDeProdutos.length; i++) {
         objetoAtual = listaDeProdutos[i]
-        stringPrint += `${i+1}º produto: ${JSON.stringify(objetoAtual)} <br>`
+        stringPrint += `${i + 1}º produto: ${JSON.stringify(objetoAtual)} <br>`
     }
 
     document.querySelector('#listar').innerHTML = stringPrint
@@ -44,11 +44,17 @@ function listar() {
 }
 
 function alterarValorDoProduto() {
-    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    listaDeProdutos = localStorage.getItem("produtosLoja")
     var nomeAlterar = nomeAlterarInput.value
     var precoNovo = precoNovoInput.value
     if (acharProdutoPorNome(nomeAlterar)) {
-        listaDeProdutos[this.posicao].preco = precoNovo
+        for (i = 0; i < listaDeProdutos.length; i++) {
+            objetoAtual = listaDeProdutos[i]
+            if (objetoAtual.nome == nomeAlterar) {
+                objetoAtual.preco = precoNovo
+                localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
+            }
+        }
         alert('Preço atualizado!')
     } else {
         alert(`Produto [${nomeAlterar}] não encontrado!`)
@@ -57,9 +63,17 @@ function alterarValorDoProduto() {
 }
 
 function deletar() {
+    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
     var nomeDeletar = nomeDeletarInput.value
     if (acharProdutoPorNome(nomeDeletar)) {
-
+        for (i = 0; i < listaDeProdutos.length; i++) {
+            objetoAtual = listaDeProdutos[i]
+            if (objetoAtual.nome == nomeDeletar) {
+                listaDeProdutos.splice(i, 1)
+                localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
+            }
+        }
+        alert('Produto deletado')
     } else {
         alert(`Produto [${nomeDeletar}] não encontrado!`)
     }
