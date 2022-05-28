@@ -1,17 +1,3 @@
-<!--/*Criação de uma página WEB, onde será possível realizar o cadastro de um produto de uma loja, alterar o valor desse produto, deletar o produto da prateleira e apresentar a lista dos produtos para os clientes na página.
-
-Tudo isso deverá ser realizado em uma única página.
-
-Itens obrigatórios:
-
-- Criação de um array de objetos para armazenar os produtos. Deverá ser armazenados dentro do LocalStorage com a chave "produtosLoja". (3,0)
-- Criação da página HTML para apresentar / alterar / cadastrar / deletar os produtos. (2,0)
-- Função para listar os produtos. (1,0)
-- Função para alterar o valor de um produto, deverá buscar cada produto pelo seu nome. (2,0)
-- Função para deletar um produto. (1,0)
-- Função para cadastrar um produto. (1,0)*/-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,13 +20,12 @@ Itens obrigatórios:
         <button onclick="listar()"><b>LISTAR</b></button><br><br>
         <div id="listar"></div>
         <h2><b>ATUALIZAR PREÇO</b></h2>
-        <input type="text" id="nomeProdutoBusca" placeholder="Produto para alterar..."><br><br>
+        <input type="text" id="nomeBuscaAlter" placeholder="Produto para alterar..."><br><br>
         <input type="text" id="precoNovo" placeholder="Novo preço..."><br><br>
         <button onclick="alterarValorDoProduto()"><b>ATUALIZAR</b></button>
         <h2><b>DELETAR</b></h2>
-        <input type="text" id="nomeProdutoBusca" placeholder="Produto para deletarar..."><br><br>
-        <button onclick="deletar()"><b>DELETAR</b></button>
-
+        <input type="text" id="nomeBuscaDel" placeholder="Produto para deletar...">
+        <button onclick="deletar()"><b>DELETAR</b></button><br><br>
 
     </center>
 
