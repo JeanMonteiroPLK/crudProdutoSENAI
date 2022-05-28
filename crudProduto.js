@@ -1,59 +1,80 @@
-/*Criação de uma página WEB, onde será possível realizar o cadastro de um produto de uma loja, alterar o valor desse produto, deletar o produto da prateleira e apresentar a lista dos produtos para os clientes na página.
-Tudo isso deverá ser realizado em uma única página.
-Itens obrigatórios:
-- Criação de um array de objetos para armazenar os produtos. Deverá ser armazenados dentro do LocalStorage com a chave "produtosLoja". (3,0)
-- Criação da página HTML para apresentar / alterar / cadastrar / deletar os produtos. (2,0)
-- Função para listar os produtos. (1,0)
-- Função para alterar o valor de um produto, deverá buscar cada produto pelo seu nome. (2,0)
-- Função para deletar um produto. (1,0)
-- Função para cadastrar um produto. (1,0)*/
-
 var listaDeProdutos = []
-var listaCopiaLocalStorage = []
+var produto
+var objetoAtual
+var posicao = -1
 
 var nomeInput = document.getElementById("nomeProduto")
 var precoInput = document.getElementById("precoProduto")
-
+var nomeAlterarInput = document.getElementById("nomeBuscaAlter")
+var nomeDeletarInput = document.getElementById("nomeBuscaDel")
+var precoNovoInput = document.getElementById("precoNovo")
 
 function cadastrar() {
-    listaCopiaLocalStorage = JSON.parse(localStorage.getItem("produtosLoja"))
-    if(listaCopiaLocalStorage == null){
+    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    if (listaDeProdutos == null) {
         listaDeProdutos = []
+        produto = {
+            nome: nomeInput.value,
+            preco: precoInput.value
+        }
+        listaDeProdutos.push(produto)
+        localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
+        alert('Produto cadastrado!')
     } else {
-        listaDeProdutos = listaCopiaLocalStorage
+        produto = {
+            nome: nomeInput.value,
+            preco: precoInput.value
+        }
+        listaDeProdutos.push(produto)
+        localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
+        alert('Produto cadastrado!')
     }
-
-    var produto = {
-        nome: nomeInput.value,
-        preco: precoInput.value
-    }
-    listaDeProdutos.push(produto)
-    localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
 }
 
 function listar() {
-    listaCopiaLocalStorage = JSON.parse(localStorage.getItem("produtosLoja"))
+    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
     var stringPrint = ''
-    var objetoAtual
-    
-    for(i = 0; i < listaCopiaLocalStorage.length; i++){
-        objetoAtual = listaCopiaLocalStorage[i]
-
-        stringPrint += `${i+1}º produto: ${Object.values(objetoAtual)} <br>`
-    }  
+    for (i = 0; i < listaDeProdutos.length; i++) {
+        objetoAtual = listaDeProdutos[i]
+        stringPrint += `${i+1}º produto: ${JSON.stringify(objetoAtual)} <br>`
+    }
 
     document.querySelector('#listar').innerHTML = stringPrint
-    
+
 }
 
 function alterarValorDoProduto() {
+    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    var nomeAlterar = nomeAlterarInput.value
+    var precoNovo = precoNovoInput.value
+    if (acharProdutoPorNome(nomeAlterar)) {
+        listaDeProdutos[this.posicao].preco = precoNovo
+        alert('Preço atualizado!')
+    } else {
+        alert(`Produto [${nomeAlterar}] não encontrado!`)
+    }
 
 }
 
 function deletar() {
-    
+    var nomeDeletar = nomeDeletarInput.value
+    if (acharProdutoPorNome(nomeDeletar)) {
+
+    } else {
+        alert(`Produto [${nomeDeletar}] não encontrado!`)
+    }
 }
 
-function listarProdutoPorNome() {
-    
+
+function acharProdutoPorNome(nomeBusca) {
+    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    var retorno = false
+    for (i = 0; i < listaDeProdutos.length; i++) {
+        objetoAtual = listaDeProdutos[i]
+        if (objetoAtual.nome == nomeBusca) {
+            this.posicao = i
+            retorno = true
+        }
+    }
+    return retorno
 }
