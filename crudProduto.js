@@ -10,85 +10,106 @@ var nomeDeletarInput = document.getElementById("nomeBuscaDel")
 var precoNovoInput = document.getElementById("precoNovo")
 
 function cadastrar() {
-    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
-    if (listaDeProdutos == null) {
-        listaDeProdutos = []
-        produto = {
-            nome: nomeInput.value,
-            preco: precoInput.value
-        }
-        listaDeProdutos.push(produto)
-        localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
-        alert('Produto cadastrado!')
+    validaListaDoLocalStorage()
+    var campoNome = "NOME"
+    var campoPreco = "PREÇO"
+    if (ehInputVazio(nomeInput.value)) {
+        alert(`Campo [${campoNome}] não pode ser vazio!`)
     } else {
-        produto = {
-            nome: nomeInput.value,
-            preco: precoInput.value
+        if (ehInputVazio(precoInput.value)) {
+            alert(`Campo [${campoPreco}] não pode ser vazio!`)
+        } else {
+            produto = {
+                nome: nomeInput.value,
+                preco: precoInput.value
+            }
+            this.listaDeProdutos.push(produto)
+            localStorage.setItem("produtosLoja", JSON.stringify(this.listaDeProdutos))
+            alert('Produto cadastrado!')
         }
-        listaDeProdutos.push(produto)
-        localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
-        alert('Produto cadastrado!')
     }
 }
 
 function listar() {
     listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    var cabecalho = '<<< PRODUTOS >>> <br>'
     var stringPrint = ''
     for (i = 0; i < listaDeProdutos.length; i++) {
         objetoAtual = listaDeProdutos[i]
-        stringPrint += `${i + 1}º produto: ${JSON.stringify(objetoAtual)} <br>`
+        stringPrint += `<br> #${i + 1} 
+        <br>NOME: ${objetoAtual.nome} 
+        <br>PREÇO: R$${objetoAtual.preco} <br>`
     }
 
-    document.querySelector('#listar').innerHTML = stringPrint
+    document.querySelector('#listar').innerHTML = cabecalho + stringPrint
 
 }
 
 function alterarValorDoProduto() {
-    listaDeProdutos = localStorage.getItem("produtosLoja")
+    this.listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
     var nomeAlterar = nomeAlterarInput.value
+    var campoNomeAlterar = 'PRODUTO PARA ATUALIZAR'
     var precoNovo = precoNovoInput.value
-    if (acharProdutoPorNome(nomeAlterar)) {
-        for (i = 0; i < listaDeProdutos.length; i++) {
-            objetoAtual = listaDeProdutos[i]
-            if (objetoAtual.nome == nomeAlterar) {
-                objetoAtual.preco = precoNovo
-                localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
+    var campoNovoPreco = 'NOVO PREÇO'
+    if (ehInputVazio(nomeAlterar)) {
+        alert(`Campo [${campoNomeAlterar}] não pode ser vazio!`)
+    } else {
+        if (ehInputVazio(precoNovo)) {
+            alert(`Campo [${campoNovoPreco}] não pode ser vazio!`)
+        } else {
+            if (acharProdutoPorNome(this.listaDeProdutos, nomeAlterar)) {
+                this.listaDeProdutos[posicao].preco = precoNovo
+                localStorage.setItem("produtosLoja", JSON.stringify(this.listaDeProdutos))
+                alert('Preço atualizado!')
+            } else {
+                alert(`Produto [${nomeAlterar}] não encontrado!`)
             }
         }
-        alert('Preço atualizado!')
-    } else {
-        alert(`Produto [${nomeAlterar}] não encontrado!`)
     }
-
 }
 
 function deletar() {
-    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    this.listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
     var nomeDeletar = nomeDeletarInput.value
-    if (acharProdutoPorNome(nomeDeletar)) {
-        for (i = 0; i < listaDeProdutos.length; i++) {
-            objetoAtual = listaDeProdutos[i]
-            if (objetoAtual.nome == nomeDeletar) {
-                listaDeProdutos.splice(i, 1)
-                localStorage.setItem("produtosLoja", JSON.stringify(listaDeProdutos))
-            }
-        }
-        alert('Produto deletado')
+    var campoNomeDeletar = 'PRODUTO PARA DELETAR'
+    if (ehInputVazio(nomeDeletar)) {
+        alert(`Campo [${campoNomeDeletar}] não pode ser vazio!`)
     } else {
-        alert(`Produto [${nomeDeletar}] não encontrado!`)
+        if (acharProdutoPorNome(this.listaDeProdutos, nomeDeletar)) {
+            this.listaDeProdutos.splice(posicao, 1)
+            localStorage.setItem("produtosLoja", JSON.stringify(this.listaDeProdutos))
+            alert('Produto deletado')
+        } else {
+            alert(`Produto [${nomeDeletar}] não encontrado!`)
+        }
     }
 }
 
 
-function acharProdutoPorNome(nomeBusca) {
-    listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+function acharProdutoPorNome(lista, nomeBusca) {
+    lista = JSON.parse(localStorage.getItem("produtosLoja"))
     var retorno = false
-    for (i = 0; i < listaDeProdutos.length; i++) {
-        objetoAtual = listaDeProdutos[i]
+    for (i = 0; i < lista.length; i++) {
+        objetoAtual = lista[i]
         if (objetoAtual.nome == nomeBusca) {
             this.posicao = i
             retorno = true
         }
     }
     return retorno
+}
+
+function validaListaDoLocalStorage() {
+    this.listaDeProdutos = JSON.parse(localStorage.getItem("produtosLoja"))
+    if (this.listaDeProdutos == null) {
+        this.listaDeProdutos = []
+    }
+}
+
+function ehInputVazio(input) {
+    if (input == '' || input == null || input == undefined) {
+        return true
+    } else {
+        return false
+    }
 }
